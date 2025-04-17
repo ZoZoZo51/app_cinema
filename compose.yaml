@@ -8,9 +8,12 @@ services:
     container_name: nextjs_app
     ports:
       - "3000:3000"
+    env_file:
+      - .env
     environment:
       NODE_ENV: production
       DATABASE_URL: postgresql://admin:password@db:5432/app_cinema
+      NEXTAUTH_URL: http://localhost:3000
     depends_on:
       - db
 
