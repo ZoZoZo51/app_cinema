@@ -7,7 +7,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "docker:restart": "docker compose down && docker compose up -d --build"
+    "docker:restart": "docker compose down && docker compose up --build"
   },
   "dependencies": {
     "next": "15.3.0",
