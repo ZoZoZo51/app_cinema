@@ -14,6 +14,8 @@ services:
       NODE_ENV: production
       DATABASE_URL: postgresql://admin:password@db:5432/app_cinema
       NEXTAUTH_URL: http://localhost:3000
+      TMDB_API_KEY: 816c8f7862926145fc84f3551cadc890
+      TMBD_ACCESS_TOKEN: eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI4MTZjOGY3ODYyOTI2MTQ1ZmM4NGYzNTUxY2FkYzg5MCIsIm5iZiI6MTY5NzA0NTUzMi41OTIsInN1YiI6IjY1MjZkYzFjZWE4NGM3MDEyZDZlMGQzNyIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.C2fuvO0k9_pjtjGVyyIjUMCxA2Krj1VTltsHCcyfM1w
     depends_on:
       - db
 
