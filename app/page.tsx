@@ -1,28 +1,21 @@
 "use client"
 
-import { signIn, signOut, useSession } from "next-auth/react"
+import { useState } from "react";
 import ListAllFilms from "./components/listAllFilms";
 import Navbar from "./components/navbar";
 
-
 export default function Home() {
-  const { data: session} = useSession()
-  if (session)
-    console.log(session)
+  const [selectedTab, setSelectedTab] = useState(0)
+  const tabList: Tab[] =[
+    { id: 0, title: 'Tout les films'},
+    { id: 1, title: 'Films "Vus"', userOnly: true},
+    { id: 2, title: 'Films "À Voir"', userOnly: true},
+  ];
 
   return (
     <>
-      <Navbar />
-      <div className="mx-auto flex justify-center items-center flex-col gap-2">
-        { session ? <><p className="m-4">Vous êtes connecté en tant que : {session.user?.name}</p><button onClick={async () => await signOut()}>Déconnexion</button></> : <p className="mb-4">Déconnecté</p>}
-        <div className="flex items-center gap-2">
-          <button className="bg-gray-300 hover:bg-gray-400 rounded-md p-3" onClick={async () => await signIn("google")}>
-            Se connecter avec Google
-          </button>
-          <button className="bg-gray-300 hover:bg-gray-400 rounded-md p-3" onClick={async () => await signIn("github")}>
-            Se connecter avec GitHub
-          </button>
-        </div>
+      <Navbar tabsList={tabList} selectedTab={selectedTab} setSelectedTab={setSelectedTab} />
+      <div className="py-16">
         <ListAllFilms />
       </div>
     </>
