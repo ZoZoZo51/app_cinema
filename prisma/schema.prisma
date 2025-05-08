@@ -8,16 +8,38 @@ datasource db {
 }
 
 model User {
-  id            String   @id @default(cuid())
+  id            String          @id @default(cuid())
   name          String?
-  email         String?  @unique
+  email         String?         @unique
   emailVerified DateTime?
   image         String?
-  createdAt     DateTime @default(now())
-  updatedAt     DateTime @updatedAt
+  createdAt     DateTime        @default(now())
+  updatedAt     DateTime        @updatedAt
 
   accounts      Account[]
   sessions      Session[]
+  watchedMovies WatchedMovie[]
+}
+
+model Movie {
+  id          String          @id
+  title       String
+  posterPath  String?
+  createdAt   DateTime        @default(now())
+
+  watchedBy   WatchedMovie[]
+}
+
+model WatchedMovie {
+  id      String   @id @default(cuid())
+  userId  String
+  movieId String
+  watchedAt DateTime @default(now())
+
+  user    User   @relation(fields: [userId], references: [id])
+  movie   Movie  @relation(fields: [movieId], references: [id])
+
+  @@unique([userId, movieId]) // prevent duplicate entries
 }
 
 model Account {

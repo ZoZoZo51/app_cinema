@@ -23,6 +23,25 @@ const ListAllFilms = () => {
     fetchMovies();
   }, [currentPage]);
 
+
+  const handleAddMovie = async (movie: Movie) => {
+    const res = await fetch('/api/user/watched-movies', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        movieId: movie.id,
+        title: movie.title,
+        posterPath: movie.poster_path,
+      }),
+    });
+
+    if (res.ok)
+      alert(`✅ Film "${movie.title}" ajouté à votre liste de films vus !`);
+  };
+  
+
   if (loading) return (
     <div className="flex items-center justify-center min-h-screen">
       <p className="text-xl text-gray-700 animate-pulse">Chargement...</p>
@@ -44,7 +63,7 @@ const ListAllFilms = () => {
                   height={300}
                   className="rounded-lg shadow-md transform transition-transform duration-300 hover:scale-105"
                 />
-                <button className="absolute bottom-2 right-2 bg-green-500 hover:bg-green-600 text-white rounded w-8 h-8 flex items-center justify-center text-xl font-bold cursor-pointer shadow">
+                <button onClick={() => handleAddMovie(movie)} className="absolute bottom-2 right-2 bg-green-500 hover:bg-green-600 text-white rounded w-8 h-8 flex items-center justify-center text-xl font-bold cursor-pointer shadow">
                   +
                 </button>
               </div>
