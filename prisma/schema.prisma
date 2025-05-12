@@ -22,7 +22,7 @@ model User {
 }
 
 model Movie {
-  id          String          @id
+  id          Int             @id @default(autoincrement())
   title       String
   posterPath  String?
   createdAt   DateTime        @default(now())
@@ -31,15 +31,15 @@ model Movie {
 }
 
 model WatchedMovie {
-  id      String   @id @default(cuid())
-  userId  String
-  movieId String
+  id        Int      @id @default(autoincrement())
+  userId    String
+  movieId   Int
   watchedAt DateTime @default(now())
 
-  user    User   @relation(fields: [userId], references: [id])
-  movie   Movie  @relation(fields: [movieId], references: [id])
+  user      User     @relation(fields: [userId], references: [id])
+  movie     Movie    @relation(fields: [movieId], references: [id])
 
-  @@unique([userId, movieId]) // prevent duplicate entries
+  @@unique([userId, movieId])
 }
 
 model Account {

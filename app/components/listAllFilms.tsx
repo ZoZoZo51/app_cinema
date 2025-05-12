@@ -23,7 +23,6 @@ const ListAllFilms = () => {
     fetchMovies();
   }, [currentPage]);
 
-
   const handleAddMovie = async (movie: Movie) => {
     const res = await fetch('/api/user/watched-movies', {
       method: 'POST',
@@ -37,10 +36,14 @@ const ListAllFilms = () => {
       }),
     });
 
+    const result = await res.json();
+    console.log("Response status:", res.status);
+    console.log("Response body:", result);
     if (res.ok)
-      alert(`✅ Film "${movie.title}" ajouté à votre liste de films vus !`);
+      alert(`✅ ${movie.title} ajouté à votre liste de films vus !`);
+    else
+      alert(`Error : ${result.error}`)
   };
-  
 
   if (loading) return (
     <div className="flex items-center justify-center min-h-screen">

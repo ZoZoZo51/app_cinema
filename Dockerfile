@@ -32,6 +32,8 @@ USER node
 # Copy the rest of the source files into the image.
 COPY . .
 
+RUN npx prisma generate
+
 # Build Next.js app
 RUN npm run build
 
