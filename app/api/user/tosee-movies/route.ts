@@ -12,7 +12,8 @@ export async function POST(req: NextRequest) {
 
   const { movieId, title, poster_path, overview, release_date, vote_average } = await req.json();
 
-  if (!movieId || !title || !overview || !release_date || !vote_average) {
+  // Vérification des données
+  if (!movieId || !title || !overview || !release_date || !vote_average || poster_path === undefined) {
     return NextResponse.json({ error: 'Missing data' }, { status: 400 });
   }
 
@@ -28,31 +29,32 @@ export async function POST(req: NextRequest) {
     await prisma.movie.upsert({
       where: { id: movieId },
       update: {},
+      // TODO PROBLEME ACTUEL : posterPath ou poster_path c'est pas clair vas y (error on build)
       create: {
         id: movieId,
         title,
         poster_path,
         overview,
         release_date,
-        vote_average
-      }
+        vote_average,
+      },
     });
 
-    await prisma.watchedMovie.upsert({
+    await prisma.toSeeMovie.upsert({
       where: {
         userId_movieId: {
           userId: user.id,
           movieId: movieId,
         },
       },
-      update: { watchedAt: new Date() },
+      update: {},
       create: {
         userId: user.id,
         movieId: movieId,
       },
     });
 
-    return NextResponse.json({ message: 'Movie added to watched list' });
+    return NextResponse.json({ message: 'Movie added to To See list' });
   } catch (error) {
     console.error(error);
     return NextResponse.json({ error: 'Something went wrong' }, { status: 500 });

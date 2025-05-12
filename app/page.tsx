@@ -3,6 +3,7 @@
 import { useState } from "react";
 import ListAllFilms from "./components/listAllFilms";
 import Navbar from "./components/navbar";
+import ListWatchedFilms from "./components/listWatchedFilms";
 
 export default function Home() {
   const [selectedTab, setSelectedTab] = useState(0)
@@ -16,7 +17,8 @@ export default function Home() {
     <>
       <Navbar tabsList={tabList} selectedTab={selectedTab} setSelectedTab={setSelectedTab} />
       <div className="py-16">
-        <ListAllFilms />
+        <ListAllFilms active={selectedTab === 0} />
+        <ListWatchedFilms active={selectedTab === 1} />
       </div>
     </>
   );

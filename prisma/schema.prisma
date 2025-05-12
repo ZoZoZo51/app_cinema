@@ -19,15 +19,21 @@ model User {
   accounts      Account[]
   sessions      Session[]
   watchedMovies WatchedMovie[]
+  toSeeMovies   ToSeeMovie[]
 }
-
 model Movie {
-  id          Int             @id @default(autoincrement())
-  title       String
-  posterPath  String?
-  createdAt   DateTime        @default(now())
+  id            Int       @id @default(autoincrement())
+  title         String
+  overview      String
+  releaseDate  String
+  voteAverage  Float
+  posterPath   String?
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
 
-  watchedBy   WatchedMovie[]
+  // Relations
+  watchedMovies WatchedMovie[]
+  toSeeMovies   ToSeeMovie[]
 }
 
 model WatchedMovie {
@@ -35,6 +41,17 @@ model WatchedMovie {
   userId    String
   movieId   Int
   watchedAt DateTime @default(now())
+
+  user      User     @relation(fields: [userId], references: [id])
+  movie     Movie    @relation(fields: [movieId], references: [id])
+
+  @@unique([userId, movieId])
+}
+
+model ToSeeMovie {
+  id        Int      @id @default(autoincrement())
+  userId    String
+  movieId   Int
 
   user      User     @relation(fields: [userId], references: [id])
   movie     Movie    @relation(fields: [movieId], references: [id])
