@@ -22,4 +22,6 @@ interface Tab {
 
 interface TabProps {
   hidden: boolean
+  refresh: boolean
+  setRefresh: (refresh: boolean) => void
 }

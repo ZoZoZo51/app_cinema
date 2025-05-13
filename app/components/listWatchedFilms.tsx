@@ -37,7 +37,7 @@ const ListWatchedFilms = (props: TabProps) => {
     };
 
     fetchWatchedMovies();
-  }, []);
+  }, [props.refresh]);
 
   if (loading) {
     return (

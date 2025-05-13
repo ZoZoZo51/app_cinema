@@ -7,6 +7,7 @@ import ListWatchedFilms from "./components/listWatchedFilms";
 
 export default function Home() {
   const [selectedTab, setSelectedTab] = useState(0)
+  const [refresh, setRefresh] = useState(false);
   const tabList: Tab[] =[
     { id: 0, title: 'Tout les films'},
     { id: 1, title: 'Films "Vus"', userOnly: true},
@@ -17,8 +18,8 @@ export default function Home() {
     <>
       <Navbar tabsList={tabList} selectedTab={selectedTab} setSelectedTab={setSelectedTab} />
       <div className="py-16">
-        <ListAllFilms hidden={selectedTab !== 0} />
-        <ListWatchedFilms hidden={selectedTab !== 1} />
+        <ListAllFilms hidden={selectedTab !== 0} refresh={refresh} setRefresh={setRefresh} />
+        <ListWatchedFilms hidden={selectedTab !== 1} refresh={refresh} setRefresh={setRefresh} />
       </div>
     </>
   );

@@ -38,10 +38,12 @@ const ListAllFilms = (props: TabProps) => {
     const result = await res.json();
     console.log("Response status:", res.status);
     console.log("Response body:", result);
-    if (res.ok)
+    if (res.ok){
       alert(`✅ ${movie.title} ajouté à votre liste de films vus !`);
+      props.setRefresh(!props.refresh);
+    }
     else
-      alert(`Error : ${result.error}`)
+      alert(`Erreur : ${result.error}`)
   };
 
   if (loading) return (
