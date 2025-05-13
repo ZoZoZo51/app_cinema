@@ -58,10 +58,10 @@ const ListWatchedFilms = (props: TabProps) => {
   const sortedDates = Object.keys(groupedMovies).sort((a, b) => (dayjs(b).isAfter(dayjs(a)) ? 1 : -1));
 
   return (
-    <div className="p-4 space-y-10">
+    <div className={`${props.hidden ? 'hidden' : ''} p-4 space-y-10`}>
       {sortedDates.map((date) => (
         <div key={date}>
-          <h2 className="text-2xl font-bold text-gray-800 mb-4">{dayjs(date).format('DD MMMM YYYY')}</h2>
+          <h2 className="text-2xl font-bold text-gray-800 mb-4">Vu le {dayjs(date).format('DD MMMM YYYY')} : </h2>
           <ul className="space-y-4">
             {groupedMovies[date].map(({ id, title }) => (
               <li key={id} className="flex items-center gap-4">
