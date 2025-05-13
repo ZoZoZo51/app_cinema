@@ -1,12 +1,7 @@
 import { useEffect, useState } from 'react';
 import Image from 'next/image';
-import { FaEye } from 'react-icons/fa';
 
-interface Props {
-  active: boolean;
-}
-
-const ListAllFilms = (props: Props) => {
+const ListAllFilms = () => {
   const [movies, setMovies] = useState<Movie[]>([]);
   const [loading, setLoading] = useState(true);
   const [currentPage, setCurrentPage] = useState(1);
@@ -50,28 +45,6 @@ const ListAllFilms = (props: Props) => {
       alert(`Error : ${result.error}`)
   };
 
-  const handleAddToSeeMovie = async (movie: Movie) => {
-    const res = await fetch('/api/user/tosee-movies', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        movieId: movie.id,
-        title: movie.title,
-        posterPath: movie.poster_path,
-      }),
-    });
-
-    const result = await res.json();
-    console.log("Response status:", res.status);
-    console.log("Response body:", result);
-    if (res.ok)
-      alert(`✅ ${movie.title} ajouté à votre liste de films à voir !`);
-    else
-      alert(`Erreur : ${result.error}`)
-  };
-
   if (loading) return (
     <div className="flex items-center justify-center min-h-screen">
       <p className="text-xl text-gray-700 animate-pulse">Chargement...</p>
@@ -79,7 +52,7 @@ const ListAllFilms = (props: Props) => {
   );
 
   return (
-    <div className={`flex flex-col items-center ${props.active ? '' : 'hidden'}`}>
+    <div className="flex flex-col items-center">
       <div className="flex flex-wrap gap-4 justify-center mb-6">
         {movies.map((movie) => (
           <div key={movie.id} className="pt-2 flex flex-col items-center w-[200px]">
@@ -95,9 +68,6 @@ const ListAllFilms = (props: Props) => {
                 />
                 <button onClick={() => handleAddMovie(movie)} className="absolute bottom-2 right-2 bg-green-500 hover:bg-green-600 text-white rounded w-8 h-8 flex items-center justify-center text-xl font-bold cursor-pointer shadow">
                   +
-                </button>
-                <button onClick={() => handleAddToSeeMovie(movie)} className="absolute bottom-2 left-2 bg-blue-500 hover:bg-blue-600 text-white rounded w-8 h-8 flex items-center justify-center text-xl font-bold cursor-pointer shadow">
-                  <FaEye />
                 </button>
               </div>
             )}

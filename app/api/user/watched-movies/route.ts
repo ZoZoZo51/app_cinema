@@ -10,9 +10,9 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
   }
 
-  const { movieId, title, poster_path, overview, release_date, vote_average } = await req.json();
+  const { movieId, title, posterPath } = await req.json();
 
-  if (!movieId || !title || !overview || !release_date || !vote_average) {
+  if (!movieId || !title) {
     return NextResponse.json({ error: 'Missing data' }, { status: 400 });
   }
 
@@ -31,11 +31,8 @@ export async function POST(req: NextRequest) {
       create: {
         id: movieId,
         title,
-        poster_path,
-        overview,
-        release_date,
-        vote_average
-      }
+        posterPath,
+      },
     });
 
     await prisma.watchedMovie.upsert({
