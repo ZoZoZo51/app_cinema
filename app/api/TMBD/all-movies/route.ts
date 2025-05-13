@@ -21,12 +21,12 @@ export async function GET(request: Request) {
     let allMovies: Movie[] = [];
     let totalPagesAPI = 0;
 
-    // Calcul des pages API à charger pour cette page app
+    // Calcul des pages API à charger
     const startPage = (appPage - 1) * 5 + 1;
     const endPage = startPage + 4;
 
     for (let page = startPage; page <= endPage; page++) {
-      const response = await fetch(`https://api.themoviedb.org/3/discover/movie?page=${page}`, options);
+      const response = await fetch(`https://api.themoviedb.org/3/discover/movie?page=${page}&language=fr`, options);
 
       if (!response.ok) {
         throw new Error(`Erreur API TMDB sur la page ${page}`);

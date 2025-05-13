@@ -7,8 +7,19 @@ interface Movie {
   poster_path: string | null;
 };
 
+interface WatchedMovie {
+  id: number;
+  movieId: number;
+  title: string;
+  watchedAt: Date;
+}
+
 interface Tab {
   id: number
   title: string
   userOnly?: boolean
 } 
+
+interface TabProps {
+  hidden: boolean
+}

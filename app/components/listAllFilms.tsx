@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import Image from 'next/image';
 
-const ListAllFilms = () => {
+const ListAllFilms = (props: TabProps) => {
   const [movies, setMovies] = useState<Movie[]>([]);
   const [loading, setLoading] = useState(true);
   const [currentPage, setCurrentPage] = useState(1);
@@ -32,7 +32,6 @@ const ListAllFilms = () => {
       body: JSON.stringify({
         movieId: movie.id,
         title: movie.title,
-        posterPath: movie.poster_path,
       }),
     });
 
@@ -46,13 +45,13 @@ const ListAllFilms = () => {
   };
 
   if (loading) return (
-    <div className="flex items-center justify-center min-h-screen">
+    <div className={`${props.hidden ? 'hidden' : ''} flex items-center justify-center min-h-screen`}>
       <p className="text-xl text-gray-700 animate-pulse">Chargement...</p>
     </div>
   );
 
   return (
-    <div className="flex flex-col items-center">
+    <div className={`${props.hidden ? 'hidden' : ''} flex flex-col items-center`}>
       <div className="flex flex-wrap gap-4 justify-center mb-6">
         {movies.map((movie) => (
           <div key={movie.id} className="pt-2 flex flex-col items-center w-[200px]">
