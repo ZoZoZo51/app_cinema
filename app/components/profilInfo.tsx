@@ -69,7 +69,7 @@ const ProfileInfo = (props: TabProps) => {
       <label className="block mb-2 text-sm font-medium text-gray-700">Email</label>
       <input
         type="email"
-        className="w-full mb-6 px-4 py-2 border rounded bg-gray-100"
+        className="w-full mb-6 px-4 py-2 border rounded bg-gray-200 text-gray-500 cursor-not-allowed"
         value={user.email}
         readOnly
       />
