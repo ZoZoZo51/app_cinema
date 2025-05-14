@@ -23,12 +23,14 @@ export default function Home() {
         tabsList={tabList}
         selectedTab={selectedTab}
         setSelectedTab={setSelectedTab}
+        refresh={refresh}
+        setRefresh={setRefresh}
       />
       <div className="py-16">
         <ListAllFilms hidden={selectedTab !== 0} refresh={refresh} setRefresh={setRefresh} />
         <ListWatchedFilms hidden={selectedTab !== 1} refresh={refresh} setRefresh={setRefresh} />
         <ListToSeeFilms hidden={selectedTab !== 2} refresh={refresh} setRefresh={setRefresh} />
-        <ProfilInfo hidden={selectedTab !== "profil"} />
+        <ProfilInfo hidden={selectedTab !== "profil"} refresh={refresh} setRefresh={setRefresh} />
       </div>
     </>
   );
