@@ -12,7 +12,6 @@ export async function POST(req: NextRequest) {
 
   const data = await req.json();
 
-  console.log('Received data:', data);
   const { movieId, title, release_date } = data;
   if (!movieId || !title || !release_date) {
     return NextResponse.json({ error: 'Missing data' }, { status: 400 });
