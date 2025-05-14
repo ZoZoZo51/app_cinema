@@ -26,7 +26,10 @@ export async function GET() {
       return NextResponse.json({ error: 'Utilisateur non trouvé' }, { status: 404 });
     }
 
-    const movies = user.watchedMovies.map((wm) => wm.movie);
+    const movies = user.watchedMovies.map((wm) => ({
+      ...wm.movie,
+      rating: wm.rating,
+    }));
 
     return NextResponse.json(movies);
   } catch (error) {

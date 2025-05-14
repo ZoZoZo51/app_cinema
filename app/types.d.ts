@@ -13,6 +13,7 @@ interface WatchedMovie {
   movieId: number;
   title: string;
   watchedAt: Date;
+  rating: number | null;
 }
 
 interface ToSeeMovie {

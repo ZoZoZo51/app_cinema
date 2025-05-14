@@ -10,7 +10,7 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
   }
 
-  const { movieId, title, release_date } = await req.json();
+  const { movieId, title, release_date, rating } = await req.json();
 
   if (!movieId || !title || !release_date) {
     return NextResponse.json({ error: 'Missing data' }, { status: 400 });
@@ -42,10 +42,11 @@ export async function POST(req: NextRequest) {
           movieId: movieId,
         },
       },
-      update: { watchedAt: new Date() },
+      update: { watchedAt: new Date(), rating },
       create: {
         userId: user.id,
         movieId: movieId,
+        rating,
       },
     });
 

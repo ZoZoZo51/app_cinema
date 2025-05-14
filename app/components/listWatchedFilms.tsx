@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react';
 import dayjs from 'dayjs';
 import 'dayjs/locale/fr'; // Import de la locale française
+import { FaClapperboard } from 'react-icons/fa6';
 
 dayjs.locale('fr'); // Application de la locale française
 
@@ -63,9 +64,21 @@ const ListWatchedFilms = (props: TabProps) => {
         <div key={date}>
           <h2 className="text-2xl font-bold text-gray-800 mb-4">Vu le {dayjs(date).format('DD MMMM YYYY')} : </h2>
           <ul className="space-y-4">
-            {groupedMovies[date].map(({ id, title }) => (
+            {groupedMovies[date].map(({ id, title, rating }) => (
               <li key={id} className="flex items-center gap-4">
-                <span className="text-lg font-medium">{title}</span>
+                <span className="text-lg font-bold">
+                  {title}
+                  {rating && (
+                    <span className="ml-2 inline-flex items-center space-x-1">
+                      ({[...Array(5)].map((_, i) => (
+                        <FaClapperboard
+                          key={i}
+                          className={`w-5 h-5 ${i < rating ? 'text-yellow-600' : 'text-gray-400'}`}
+                        />
+                      ))})
+                    </span>
+                  )}
+                </span>
               </li>
             ))}
           </ul>

@@ -38,6 +38,7 @@ model WatchedMovie {
   userId    String
   movieId   Int
   watchedAt DateTime @default(now())
+  rating       Int?
 
   user      User     @relation(fields: [userId], references: [id])
   movie     Movie    @relation(fields: [movieId], references: [id])
