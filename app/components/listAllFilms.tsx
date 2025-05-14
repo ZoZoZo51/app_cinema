@@ -10,6 +10,7 @@ const ListAllFilms = (props: TabProps) => {
   const [totalPages, setTotalPages] = useState(1);
   const [watchedMovies, setWatchedMovies] = useState<WatchedMovie[]>([]);
   const [toSeeMovies, setToSeeMovies] = useState<ToSeeMovie[]>([]);
+  const [searchTerm, setSearchTerm] = useState('');
 
   useEffect(() => {
     const fetchMovies = async () => {
@@ -24,8 +25,38 @@ const ListAllFilms = (props: TabProps) => {
 
       setLoading(false);
     };
-    fetchMovies();
-  }, [currentPage]);
+
+    if (searchTerm.trim() === '')
+      fetchMovies();
+    else {
+      const fetchFilteredMovies = async () => {
+        if (searchTerm.trim() === '') {
+          setCurrentPage(1);
+          return;
+        }
+
+        try {
+          const res = await fetch(`/api/TMBD/all-movies/filter?query=${encodeURIComponent(searchTerm)}`);
+          const data = await res.json();
+          if (res.ok) {
+            const uniqueMovies = data.results.filter((movie: Movie, index: number, self: Movie[]) =>
+              index === self.findIndex((m) => m.id === movie.id)
+            );
+            setMovies(uniqueMovies);
+            setTotalPages(1);
+            setCurrentPage(1);
+          } else {
+            console.error(data.error);
+          }
+        } catch (err) {
+          console.error('Erreur lors de la recherche :', err);
+        }
+      };
+
+      const debounceTimer = setTimeout(fetchFilteredMovies, 500);
+      return () => clearTimeout(debounceTimer);
+    }
+  }, [currentPage, searchTerm]);
 
   useEffect(() => {
     const fetchWatchedMovies = async () => {
@@ -106,6 +137,16 @@ const ListAllFilms = (props: TabProps) => {
 
   return (
     <div className={`${props.hidden ? 'hidden' : ''} flex flex-col items-center`}>
+      <div className="my-6 w-1/2">
+        <input
+          type="text"
+          placeholder="Rechercher un film..."
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
+          className="w-full px-4 py-2 border border-gray-300 rounded-xl text-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-400 transition"
+        />
+      </div>
+
       <div className="flex flex-wrap gap-4 justify-center mb-6">
         {movies.map((movie) => (
           <div key={movie.id} className="pt-2 flex flex-col items-center w-[200px]">
