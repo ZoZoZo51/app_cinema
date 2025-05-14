@@ -18,6 +18,7 @@ interface ToSeeMovie {
   id: number;
   movieId: number;
   title: string;
+  releaseDate: string;
 }
 
 interface Tab {

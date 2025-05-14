@@ -25,6 +25,7 @@ model User {
 model Movie {
   id          Int             @id @default(autoincrement())
   title       String
+  releaseDate DateTime
 
   createdAt   DateTime        @default(now())
 
@@ -48,6 +49,7 @@ model ToSeeMovie {
   id        Int      @id @default(autoincrement())
   userId    String
   movieId   Int
+  releaseDate DateTime
 
   user      User     @relation(fields: [userId], references: [id])
   movie     Movie    @relation(fields: [movieId], references: [id])

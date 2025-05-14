@@ -21,7 +21,6 @@ export async function GET(request: Request) {
     let allMovies: Movie[] = [];
     let totalPagesAPI = 0;
 
-    // Calcul des pages API à charger
     const startPage = (appPage - 1) * 5 + 1;
     const endPage = startPage + 4;
 

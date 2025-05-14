@@ -59,7 +59,7 @@ const ListWatchedFilms = (props: TabProps) => {
 
   return (
     <div className={`${props.hidden ? 'hidden' : ''} p-4 space-y-10`}>
-      {sortedDates.map((date) => (
+      {sortedDates.length > 0 ? sortedDates.map((date) => (
         <div key={date}>
           <h2 className="text-2xl font-bold text-gray-800 mb-4">Vu le {dayjs(date).format('DD MMMM YYYY')} : </h2>
           <ul className="space-y-4">
@@ -70,7 +70,11 @@ const ListWatchedFilms = (props: TabProps) => {
             ))}
           </ul>
         </div>
-      ))}
+      )) : (
+        <div className="flex items-center justify-center min-h-screen">
+          <p className="text-xl text-gray-700">Aucun film vu pour le moment.</p>
+        </div>
+      )}
     </div>
   );
 };

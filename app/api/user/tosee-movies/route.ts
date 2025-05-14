@@ -10,9 +10,11 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
   }
 
-  const { movieId, title } = await req.json();
+  const data = await req.json();
 
-  if (!movieId || !title) {
+  console.log('Received data:', data);
+  const { movieId, title, release_date } = data;
+  if (!movieId || !title || !release_date) {
     return NextResponse.json({ error: 'Missing data' }, { status: 400 });
   }
 
@@ -25,12 +27,16 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: 'User not found' }, { status: 404 });
     }
 
+    // Upsert du film avec la date de sortie
     await prisma.movie.upsert({
       where: { id: movieId },
-      update: {},
+      update: {
+        releaseDate: new Date(release_date),
+      },
       create: {
         id: movieId,
         title,
+        releaseDate: new Date(release_date),
       },
     });
 
@@ -45,6 +51,7 @@ export async function POST(req: NextRequest) {
       create: {
         userId: user.id,
         movieId: movieId,
+        releaseDate: new Date(release_date),
       },
     });
 

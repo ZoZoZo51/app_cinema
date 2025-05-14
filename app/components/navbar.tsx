@@ -6,8 +6,8 @@ import { useEffect, useState } from "react";
 
 interface Props {
   tabsList: Tab[]
-  selectedTab: number
-  setSelectedTab: (tabId: number) => void
+  selectedTab: number | string
+  setSelectedTab: (tabId: number | string) => void
 }
 
 const Navbar = (props: Props) => {
@@ -65,7 +65,7 @@ const Navbar = (props: Props) => {
           <div className="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
             {/* Profile part */}
             <div className="relative ml-3">
-              {isConnected ? <div className="flex flex-row items-center">
+              {isConnected ? <div className="flex flex-row items-center"  onClick={() => props.setSelectedTab("profil")}>
                 <div className="text-gray-200 mx-4">{session?.user?.name}</div>
                 <button
                   type="button"

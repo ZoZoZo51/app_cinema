@@ -44,10 +44,12 @@ const ListAllFilms = (props: TabProps) => {
   }, [props.refresh]);
 
   const isWatched = (movieId: number) => {
+    if (!('length' in watchedMovies) || watchedMovies.length === 0) return false;
     return watchedMovies.some((watchedMovie) => watchedMovie.id === movieId);
   }
 
   const isToSee = (movieId: number) => {
+    if (!('length' in toSeeMovies) || toSeeMovies.length === 0) return false;
     return toSeeMovies.some((toSeeMovie) => toSeeMovie.id === movieId);
   }
 
@@ -60,6 +62,7 @@ const ListAllFilms = (props: TabProps) => {
       body: JSON.stringify({
         movieId: movie.id,
         title: movie.title,
+        release_date: movie.release_date,
       }),
     });
     
@@ -83,6 +86,7 @@ const ListAllFilms = (props: TabProps) => {
       body: JSON.stringify({
         movieId: movie.id,
         title: movie.title,
+        release_date: movie.release_date,
       }),
     });
     
