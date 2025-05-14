@@ -1,7 +1,7 @@
-import Image from "next/image";
 import { signOut, useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 import ConnectionButton from "./connexionButton";
+import { FaUserCircle } from "react-icons/fa";
 
 interface Props {
   tabsList: Tab[];
@@ -71,13 +71,7 @@ const Navbar = (props: Props) => {
                     onClick={() => props.setSelectedTab("profil")}
                     className="flex items-center space-x-2 bg-cyan-500 hover:bg-cyan-600 text-white font-semibold py-2 px-4 rounded-full transition duration-200"
                   >
-                    <Image
-                      className="w-6 h-6 rounded-full"
-                      src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
-                      width={24}
-                      height={24}
-                      alt="profile picture"
-                    />
+                    <FaUserCircle className="w-6 h-6 text-white" />
                     <span>{user.name}</span>
                   </button>
 

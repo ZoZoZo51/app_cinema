@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import Image from 'next/image';
 import { FaEye, FaEyeSlash } from 'react-icons/fa';
+import { FaClapperboard } from 'react-icons/fa6';
 
 const ListAllFilms = (props: TabProps) => {
   const [movies, setMovies] = useState<Movie[]>([]);
@@ -67,14 +68,12 @@ const ListAllFilms = (props: TabProps) => {
     });
     
     const result = await res.json();
-    console.log("Response status:", res.status);
-    console.log("Response body:", result);
-    if (res.ok){
+    if (res.ok) {
       alert(`${remove ? '❌' : '✅'} ${movie.title} ${remove ? 'retiré de' : 'ajouté à'} votre liste de films vus !`);
       props.setRefresh(!props.refresh);
+    } else {
+      alert(`Erreur : ${result.error}`);
     }
-    else
-      alert(`Erreur : ${result.error}`)
   };
 
   const handleToSeeMovie = async (movie: Movie, remove?: boolean) => {
@@ -89,16 +88,14 @@ const ListAllFilms = (props: TabProps) => {
         release_date: movie.release_date,
       }),
     });
-    
+
     const result = await res.json();
-    console.log("Response status:", res.status);
-    console.log("Response body:", result);
-    if (res.ok){
+    if (res.ok) {
       alert(`👍 ${movie.title} ${remove ? 'retiré' : 'ajouté'} à votre liste de films à voir !`);
       props.setRefresh(!props.refresh);
+    } else {
+      alert(`Erreur : ${result.error}`);
     }
-    else
-      alert(`Erreur : ${result.error}`)
   };
 
   if (loading) return (
@@ -121,39 +118,59 @@ const ListAllFilms = (props: TabProps) => {
                   width={200}
                   height={300}
                   className="rounded-lg shadow-md transform transition-transform duration-300 hover:scale-105"
+                  onClick={() => {
+                    props.setCurrentMovieId(movie.id);
+                    props.setRefresh(!props.refresh);
+                  }}
                 />
-                {isWatched(movie.id) ? (
-                  <button
-                    onClick={() => handleWatchedMovie(movie, true)}
-                    className="absolute bottom-2 right-2 bg-red-500 hover:bg-red-600 text-white rounded w-8 h-8 flex items-center justify-center text-xl font-bold cursor-pointer shadow"
-                  >
-                    X
-                  </button>
-                ) : (
-                  <button
-                    onClick={() => handleWatchedMovie(movie)}
-                    className="absolute bottom-2 right-2 bg-green-500 hover:bg-green-600 text-white rounded w-8 h-8 flex items-center justify-center text-xl font-bold cursor-pointer shadow"
-                  >
-                    +
-                  </button>
-                )}
-                {isToSee(movie.id) ? (
-                  <button
-                    onClick={() => handleToSeeMovie(movie, true)}
-                    className="absolute bottom-2 left-2 bg-indigo-500 hover:bg-indigo-600 text-white rounded w-8 h-8 flex items-center justify-center text-xl font-bold cursor-pointer shadow"
-                  >
-                    <FaEyeSlash />
-                  </button>
-                ) : (
-                  <button
-                    onClick={() => handleToSeeMovie(movie)}
-                    className="absolute bottom-2 left-2 bg-blue-500 hover:bg-blue-600 text-white rounded w-8 h-8 flex items-center justify-center text-xl font-bold cursor-pointer shadow"
-                  >
-                    <FaEye />
-                  </button>
-                )}
-              </div>
-            )}
+                {props.user && (<>
+                  {isWatched(movie.id) ? (
+                    <button
+                      onClick={() => handleWatchedMovie(movie, true)}
+                      className="absolute bottom-2 right-2 bg-red-500 hover:bg-red-600 text-white rounded w-8 h-8 flex items-center justify-center text-xl font-bold cursor-pointer shadow"
+                    >
+                      X
+                    </button>
+                  ) : (
+                    <button
+                      onClick={() => handleWatchedMovie(movie)}
+                      className="absolute bottom-2 right-2 bg-green-500 hover:bg-green-600 text-white rounded w-8 h-8 flex items-center justify-center text-xl font-bold cursor-pointer shadow"
+                    >
+                      +
+                    </button>
+                  )}
+
+                  {isToSee(movie.id) ? (
+                    <button
+                      onClick={() => handleToSeeMovie(movie, true)}
+                      className="absolute bottom-2 left-2 bg-indigo-500 hover:bg-indigo-600 text-white rounded w-8 h-8 flex items-center justify-center text-xl font-bold cursor-pointer shadow"
+                    >
+                      <FaEyeSlash />
+                    </button>
+                  ) : (
+                    <button
+                      onClick={() => handleToSeeMovie(movie)}
+                      className="absolute bottom-2 left-2 bg-blue-500 hover:bg-blue-600 text-white rounded w-8 h-8 flex items-center justify-center text-xl font-bold cursor-pointer shadow"
+                    >
+                      <FaEye />
+                    </button>
+                  )}
+                </>)}
+              </div>)}
+
+              {movie.vote_count > 0 ? <div className="flex items-center mt-2 flex-col">
+                <div className="flex items-center mt-2">
+                  {[...Array(5)].map((_, i) => (
+                    <FaClapperboard
+                      key={i}
+                      className={`w-6 h-6 mr-1 ${i < Math.round(movie.vote_average / 2) ? "text-yellow-600" : "text-gray-700"}`}
+                    />
+                  ))}
+                </div>
+                <span className="ml-1 text-sm font-bold text-black">({(movie.vote_average / 2).toFixed(1)})</span>
+              </div> : <div className="flex items-center mt-2">
+                <span className="ml-1 text-sm font-bold text-black italic">Pas de note</span>
+              </div>}
           </div>
         ))}
       </div>

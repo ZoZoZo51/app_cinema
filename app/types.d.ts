@@ -4,6 +4,7 @@ interface Movie {
   overview: string;
   release_date: string;
   vote_average: number;
+  vote_count: number;
   poster_path: string | null;
 };
 
@@ -31,4 +32,7 @@ interface TabProps {
   hidden: boolean
   refresh: boolean
   setRefresh: (refresh: boolean) => void
+  currentMovieId: number | null
+  setCurrentMovieId: (id: number | null) => void
+  user?: boolean
 }
