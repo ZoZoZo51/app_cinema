@@ -1,11 +1,14 @@
 import { useEffect, useState } from 'react';
 import Image from 'next/image';
+import { FaEye, FaEyeSlash } from 'react-icons/fa';
 
 const ListAllFilms = (props: TabProps) => {
   const [movies, setMovies] = useState<Movie[]>([]);
   const [loading, setLoading] = useState(true);
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
+  const [watchedMovies, setWatchedMovies] = useState<WatchedMovie[]>([]);
+  const [toSeeMovies, setToSeeMovies] = useState<ToSeeMovie[]>([]);
 
   useEffect(() => {
     const fetchMovies = async () => {
@@ -23,9 +26,34 @@ const ListAllFilms = (props: TabProps) => {
     fetchMovies();
   }, [currentPage]);
 
-  const handleAddMovie = async (movie: Movie) => {
-    const res = await fetch('/api/user/watched-movies', {
-      method: 'POST',
+  useEffect(() => {
+    const fetchWatchedMovies = async () => {
+      const res = await fetch('/api/user/watched-movies/liste');
+      const data = await res.json();
+      setWatchedMovies(data);
+    };
+
+    const fetchToSeeMovies = async () => {
+      const res = await fetch('/api/user/tosee-movies/liste');
+      const data = await res.json();
+      setToSeeMovies(data);
+    };
+
+    fetchWatchedMovies();
+    fetchToSeeMovies();
+  }, [props.refresh]);
+
+  const isWatched = (movieId: number) => {
+    return watchedMovies.some((watchedMovie) => watchedMovie.id === movieId);
+  }
+
+  const isToSee = (movieId: number) => {
+    return toSeeMovies.some((toSeeMovie) => toSeeMovie.id === movieId);
+  }
+
+  const handleWatchedMovie = async (movie: Movie, remove?: boolean) => {
+    const res = await fetch(remove ? '/api/user/watched-movies/delete' : '/api/user/watched-movies', {
+      method: remove ? 'DELETE' : 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
@@ -34,12 +62,35 @@ const ListAllFilms = (props: TabProps) => {
         title: movie.title,
       }),
     });
-
+    
     const result = await res.json();
     console.log("Response status:", res.status);
     console.log("Response body:", result);
     if (res.ok){
-      alert(`✅ ${movie.title} ajouté à votre liste de films vus !`);
+      alert(`${remove ? '❌' : '✅'} ${movie.title} ${remove ? 'retiré de' : 'ajouté à'} votre liste de films vus !`);
+      props.setRefresh(!props.refresh);
+    }
+    else
+      alert(`Erreur : ${result.error}`)
+  };
+
+  const handleToSeeMovie = async (movie: Movie, remove?: boolean) => {
+    const res = await fetch(remove ? '/api/user/tosee-movies/delete' : '/api/user/tosee-movies', {
+      method: remove ? 'DELETE' : 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        movieId: movie.id,
+        title: movie.title,
+      }),
+    });
+    
+    const result = await res.json();
+    console.log("Response status:", res.status);
+    console.log("Response body:", result);
+    if (res.ok){
+      alert(`👍 ${movie.title} ${remove ? 'retiré' : 'ajouté'} à votre liste de films à voir !`);
       props.setRefresh(!props.refresh);
     }
     else
@@ -67,9 +118,36 @@ const ListAllFilms = (props: TabProps) => {
                   height={300}
                   className="rounded-lg shadow-md transform transition-transform duration-300 hover:scale-105"
                 />
-                <button onClick={() => handleAddMovie(movie)} className="absolute bottom-2 right-2 bg-green-500 hover:bg-green-600 text-white rounded w-8 h-8 flex items-center justify-center text-xl font-bold cursor-pointer shadow">
-                  +
-                </button>
+                {isWatched(movie.id) ? (
+                  <button
+                    onClick={() => handleWatchedMovie(movie, true)}
+                    className="absolute bottom-2 right-2 bg-red-500 hover:bg-red-600 text-white rounded w-8 h-8 flex items-center justify-center text-xl font-bold cursor-pointer shadow"
+                  >
+                    X
+                  </button>
+                ) : (
+                  <button
+                    onClick={() => handleWatchedMovie(movie)}
+                    className="absolute bottom-2 right-2 bg-green-500 hover:bg-green-600 text-white rounded w-8 h-8 flex items-center justify-center text-xl font-bold cursor-pointer shadow"
+                  >
+                    +
+                  </button>
+                )}
+                {isToSee(movie.id) ? (
+                  <button
+                    onClick={() => handleToSeeMovie(movie, true)}
+                    className="absolute bottom-2 left-2 bg-indigo-500 hover:bg-indigo-600 text-white rounded w-8 h-8 flex items-center justify-center text-xl font-bold cursor-pointer shadow"
+                  >
+                    <FaEyeSlash />
+                  </button>
+                ) : (
+                  <button
+                    onClick={() => handleToSeeMovie(movie)}
+                    className="absolute bottom-2 left-2 bg-blue-500 hover:bg-blue-600 text-white rounded w-8 h-8 flex items-center justify-center text-xl font-bold cursor-pointer shadow"
+                  >
+                    <FaEye />
+                  </button>
+                )}
               </div>
             )}
           </div>

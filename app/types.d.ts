@@ -14,6 +14,12 @@ interface WatchedMovie {
   watchedAt: Date;
 }
 
+interface ToSeeMovie {
+  id: number;
+  movieId: number;
+  title: string;
+}
+
 interface Tab {
   id: number
   title: string
