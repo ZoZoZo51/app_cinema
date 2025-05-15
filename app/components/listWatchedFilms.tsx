@@ -2,10 +2,10 @@
 
 import { useEffect, useState } from 'react';
 import dayjs from 'dayjs';
-import 'dayjs/locale/fr'; // Import de la locale française
+import 'dayjs/locale/fr';
 import { FaClapperboard } from 'react-icons/fa6';
 
-dayjs.locale('fr'); // Application de la locale française
+dayjs.locale('fr');
 
 const ListWatchedFilms = (props: TabProps) => {
   const [groupedMovies, setGroupedMovies] = useState<Record<string, WatchedMovie[]>>({});
