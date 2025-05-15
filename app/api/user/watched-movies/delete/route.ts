@@ -6,7 +6,6 @@ import prisma from '@/lib/prisma';
 export async function DELETE(req: NextRequest) {
   const session = await getServerSession(authOptions);
 
-  // Vérifie si l'utilisateur est authentifié
   if (!session || !session.user?.email) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
   }

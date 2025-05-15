@@ -26,7 +26,6 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: 'User not found' }, { status: 404 });
     }
 
-    // Upsert du film avec la date de sortie
     await prisma.movie.upsert({
       where: { id: movieId },
       update: {
