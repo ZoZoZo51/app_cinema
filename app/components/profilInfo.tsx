@@ -58,7 +58,7 @@ const ProfileInfo = (props: TabProps) => {
     <div className={`max-w-md mx-auto mt-16 p-6 bg-white rounded shadow ${props.hidden ? "hidden" : ""}`}>
       <h1 className="text-2xl font-bold mb-6 text-center">Mon profil</h1>
 
-      <label className="block mb-2 text-sm font-medium text-gray-700">Nom Prénom</label>
+      <label className="block mb-2 text-sm font-medium text-gray-700">Nom d&apos;Utilisateur</label>
       <input
         type="text"
         className="w-full mb-4 px-4 py-2 border rounded"
